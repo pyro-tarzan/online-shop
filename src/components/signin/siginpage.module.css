@@ -1,0 +1,54 @@
+.signincard{
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+    gap: 10px;
+}
+
+.signincard h1{
+    text-align: center;
+}
+
+.formcont label{
+    display: block;
+    font-weight: bold;
+}
+
+.formcont input{
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    transition: border-color .2s ease;
+}
+
+.formcont input:focus{
+    outline: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.formcont button{
+    font-family: "Montserrat", serif;
+    background-color: var(--nav-primary-color);
+    color: white;
+    padding: 10px 15px;
+    border: 1px solid var(--nav-primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color .2s ease, border-color .2s ease;
+    font-weight: 600;
+}
+
+.formcont button:hover{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}

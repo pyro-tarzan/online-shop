@@ -1,0 +1,19 @@
+.signinpage{
+    height: 100vh;
+    background-image: url("/images/orange-bg-image.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.signinsection{
+    padding-top: 80px;
+    height: 100%;
+}
+
+.signincont{
+    padding: 70px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
