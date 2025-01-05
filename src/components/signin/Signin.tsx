@@ -37,7 +37,7 @@ export const SignIn = () => {
                 });
 
                 const data = await res.json();
-                console.log(data.message);
+                console.log(data);
             } catch ( error ) {
                 console.log(error);
             }

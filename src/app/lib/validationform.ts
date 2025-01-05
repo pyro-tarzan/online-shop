@@ -20,5 +20,13 @@ export const validateForm = (formData: FormData) => {
         errors.password = "Password can't exceed 30 characters";
     }
 
+    if (!formData.username?.trim()) {
+        errors.username = "Username is required"
+    }
+
+    if (!formData.fullname?.trim()) {
+        errors.fullname = "Your name is required"
+    }
+
     return errors;
 }

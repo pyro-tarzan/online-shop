@@ -3,7 +3,6 @@
   --foreground: #171717;
   --nav-primary-color: #fd4d35;
   --primary-color: rgb(209, 38, 0);
-  --primary-dark-color: rgb(197, 36, 0);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -21,7 +20,9 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background-image: url("/images/orange-bg-image.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
   font-family: "Montserrat", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

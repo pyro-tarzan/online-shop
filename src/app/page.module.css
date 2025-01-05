@@ -1,10 +1,5 @@
 .page{
     height: 100vh;
-    background-image: url("/images/orange-bg-image.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 0;
 }
 
 .maincontent{

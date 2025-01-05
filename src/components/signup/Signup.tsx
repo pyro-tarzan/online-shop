@@ -1,19 +1,17 @@
 "use client";
 import styles from "@/components/signup/signuppage.module.css";
-import { useState, useEffect } from "react";
-
-interface FormData {
-    username: string;
-    email: string;
-    password: string;
-}
+import { useState } from "react";
+import { FormData } from "@/app/lib/types";
+import { validateForm } from "@/app/lib/validationform";
 
 export const Signup = () => {
     const [formData, setFormData] = useState<FormData>({
         username: "",
+        fullname: "",
         email: "",
         password: ""
     });
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -23,16 +21,37 @@ export const Signup = () => {
         }));
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async(e: any) => {
         e.preventDefault();
         // PERFORM ACTION TO SUBMIT TO BACKEND VIA API REQUEST.
 
-        setFormData({
-            username: "",
-            email: "",
-            password: ""
-        });
-        console.log("Form submitted.")
+        const validationErrors = validateForm(formData);
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+        } else {
+            try{
+                const res = await fetch("/apis/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await res.json();
+                console.log(data);
+            } catch ( error ) {
+                console.log(error);
+            }
+
+            setFormData({
+                username: "",
+                fullname: "",
+                email: "",
+                password: ""
+            });
+            console.log("Form submitted.");
+        }    
     }
     return (
         <div className={styles.signupcard}>
@@ -45,6 +64,15 @@ export const Signup = () => {
                         type="text"
                         name="username"
                         value={formData.username}
+                        onChange={handleChange}
+                    />
+                </label>
+                <br />
+                <label htmlFor="">Full name:
+                    <input 
+                        type="text" 
+                        name="fullname"
+                        value={formData.fullname}
                         onChange={handleChange}
                     />
                 </label>

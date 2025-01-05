@@ -1,0 +1,108 @@
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    background-color: #ffffff;
+    backdrop-filter: blur(1px);
+    border-bottom: 1px solid #eeeeee;
+}
+
+.navbar nav{
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 70px;
+    justify-content: space-between;
+}
+
+.navbar nav span{
+    font-size: 40px;
+    font-weight: 900;
+    cursor: default;
+    padding: 5px;
+    color: var(--nav-primary-color);
+}
+
+.navmenus{
+    display: flex;
+    height: 100%;
+    align-items: center;   
+    gap: 20px; 
+}
+
+.pmenus{
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--nav-primary-color);
+    padding: 15px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.pmenus:hover{
+    background-color: var(--nav-primary-color);
+    color: white;
+}
+
+.accountdropdown{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    top: 85px;
+    right: 15px;
+    color: #ffffff;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px 1px #00000029;
+    align-items: center;
+    z-index: 3;
+}
+
+.imagecont{
+    width: 250px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.options{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.poptions{
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--nav-primary-color);
+    width: 100%;
+    text-align: center;
+    padding: 10px 0px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.poptions:hover {
+    background-color: #0000001c;
+}
+
+.imagecircle{
+    width: 70px;
+    height: 70px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.197);
+}
+
+.imagecont p{
+    color: var(--nav-primary-color);
+    font-weight: 500;
+    font-size: 22px;
+}
