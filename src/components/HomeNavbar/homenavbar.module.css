@@ -18,35 +18,26 @@
     justify-content: space-between;
 }
 
-.navbar nav span{
+.navbar nav .homeTitle{
     font-size: 40px;
     font-weight: 900;
     cursor: default;
     padding: 5px;
     color: var(--nav-primary-color);
-}
-
-.navmenus{
-    display: flex;
-    height: 100%;
-    align-items: center;   
-    gap: 20px; 
-}
-
-.navmenus .button{
-    font-size: 20px;
-    background-color: white;
-    border: 2px solid var(--nav-primary-color);
-    border-radius: 4px;
-    color: var(--nav-primary-color);
-    padding: 5px 10px;
-    font-weight:500;
-    transition: background-color .2s ease, color .2s ease;
     cursor: pointer;
-    font-family: "Montserrat", serif;
 }
 
-.navmenus .button:hover{
-    color: white;
-    background-color: var(--nav-primary-color);
+.navitems{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+}
+
+.items{
+    margin-left: 30px;
+    transition: color .2s ease;
+    &:hover{
+        color: var(--nav-primary-color);
+    }
 }

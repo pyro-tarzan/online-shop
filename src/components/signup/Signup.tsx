@@ -1,61 +1,64 @@
 "use client";
+import { FormEvent, useState } from "react";
 import styles from "@/components/signup/signuppage.module.css";
-import { useState } from "react";
-import { FormData } from "@/app/lib/types";
-import { validateForm } from "@/app/lib/validationform";
+import { useRouter } from "next/navigation";
+import { FormDataTypes, FormState, FieldErrors } from "@/app/lib/types";
+import { SignUpFormSchema } from "@/app/lib/definitions";
 
-export const Signup = () => {
-    const [formData, setFormData] = useState<FormData>({
-        username: "",
-        fullname: "",
-        email: "",
-        password: ""
-    });
-    const [errors, setErrors] = useState({});
+const SignUp = () => {
+    const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState<FormState>({});
 
-    const handleChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormData((prevValue) => ({
-            ...prevValue,
-            [name]: value
-        }));
-    }
+    const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-    const handleSubmit = async(e: any) => {
-        e.preventDefault();
-        // PERFORM ACTION TO SUBMIT TO BACKEND VIA API REQUEST.
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const formValues: FormDataTypes = {
+            username: formData.get("username") as string,
+            fullname: formData.get("fullname") as string,
+            email: formData.get("email") as string,
+            password: formData.get("password") as string
+        };
 
-        const validationErrors = validateForm(formData);
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-        } else {
-            try{
-                const res = await fetch("/apis/signup", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(formData)
-                });
+        const result = SignUpFormSchema.safeParse(formValues);
+        if ( !result.success ) {
+            const validateErrors: FieldErrors = result.error.flatten().fieldErrors;
+            setErrorMessage({errors: validateErrors});
+            return;
+        }
+        setErrorMessage({});
 
-                const data = await res.json();
-                console.log(data);
-            } catch ( error ) {
-                console.log(error);
-            }
-
-            setFormData({
-                username: "",
-                fullname: "",
-                email: "",
-                password: ""
+        try{
+            const res = await fetch("/apis/signup", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(formValues)
             });
-            console.log("Form submitted.");
-        }    
+
+            const data = await res.json();
+            if ( data.status === 200 ) {
+                form.reset();
+                router.push(`/profile/${data.user_id}`);
+            } else {
+                setErrorMessage({message: data.message || "Signup failed."});
+            }
+            
+        } catch(error) {
+            console.error("Signup Error: ", error);
+            setErrorMessage({message: "Can't connect to the server."});
+        }
     }
+
     return (
         <div className={styles.signupcard}>
-            <div>
+            <div className={styles.cardheader}>
+                <img 
+                    src="/routing-images/left.png" 
+                    alt="left arrow" 
+                    className={styles.leftPng} 
+                    onClick={() => router.back()} 
+                />
                 <h1>Sign up</h1>
             </div>
             <form onSubmit={handleSubmit} className={styles.formcont}>
@@ -63,40 +66,47 @@ export const Signup = () => {
                     <input 
                         type="text"
                         name="username"
-                        value={formData.username}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.username && <p>{errorMessage.errors.username}</p>}
                 <br />
+
                 <label htmlFor="">Full name:
                     <input 
                         type="text" 
                         name="fullname"
-                        value={formData.fullname}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.fullname && <p>{errorMessage.errors.fullname}</p>}
                 <br />
+
                 <label htmlFor="">Email:
                     <input 
                         type="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.email && <p>{errorMessage.errors.email}</p>}
                 <br />
+
                 <label htmlFor="">Password:
                     <input 
                         type="password"
                         name="password"
-                        value={formData.password}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.password && <p>{errorMessage.errors.password}</p>}
                 <br />
-                <button type="submit">SignUp</button>
+
+                <div className={styles.footercard}>
+                    <button type="submit">SignUp</button>
+                    {errorMessage?.message && 
+                        <p className={styles.errormessage}>{errorMessage.message}</p>
+                    }
+                </div>
             </form>
         </div>
     )
 }
+
+export default SignUp;

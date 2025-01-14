@@ -1,9 +1,12 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 
+import HomeNavbar from "@/components/HomeNavbar/HomeNavbar";
+
 export default function Home() {
 	return (
 		<div className={styles.page}>
+			<HomeNavbar />
 			<div className={styles.maincontent}>
 				<div className={styles.homepage}>
 					<div className={styles.headingcontents}>

@@ -52,3 +52,31 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
+
+.cardheader{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.cardheader h1{
+    margin: auto;
+}
+
+.leftPng{
+    height: 20px;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.footercard{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.errormessage{
+    font-size: 15px;
+    color: var(--primary-color);
+}

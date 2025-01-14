@@ -1,56 +1,64 @@
 "use client";
 import styles from "@/components/signin/siginpage.module.css";
-import { useState } from "react";
-import { FormData } from "@/app/lib/types";
-import { validateForm } from "@/app/lib/validationform";
+import { useState, FormEvent } from "react";
+import { FieldErrors, FormDataTypes, FormState } from "@/app/lib/types";
+import { useRouter } from "next/navigation";
+import { SignInFormSchema } from "@/app/lib/definitions";
 
-export const SignIn = () => {
-    const [formData, setFormData] = useState<FormData>({
-        email: "",
-        password: ""
-    });
-    const [errors, setErrors] = useState({});
+const SignIn = () => {
+    const [errorMessage, setErrorMessage] = useState<FormState>({});
+    const router = useRouter();
 
-    const handleChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormData((prevValue) => ({
-            ...prevValue,
-            [name]: value
-        }));
-    }
+    const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-    const handleSubmit = async(e: any) => {
-        e.preventDefault();
         // PERFORM ACTION TO SUBMIT TO BACKEND VIA API REQUEST.
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const formValues: FormDataTypes = {
+            email: formData.get("email") as string,
+            password: formData.get("password") as string
+        }
 
-        const validateErrors = validateForm(formData);
-        if (Object.keys(validateErrors).length > 0) {
-            setErrors(validateErrors);
-        } else {
-            try{
-                const res = await fetch("/apis/signin", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(formData)
-                });
+        const result = SignInFormSchema.safeParse(formValues);
+        if ( !result.success ) {
+            const validateErrors: FieldErrors = result.error.flatten().fieldErrors;
+            setErrorMessage({errors: validateErrors});
+            return;
+        }
 
-                const data = await res.json();
-                console.log(data);
-            } catch ( error ) {
-                console.log(error);
-            }
-    
-            setFormData({
-                email: "",
-                password: ""
+        try{
+            const res = await fetch("/apis/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formValues)
             });
+
+            const data = await res.json();
+            if ( data.status == 200 ) {
+                form.reset();
+                router.push(`/profile/${data.user_id}`);
+            } else {
+                setErrorMessage({message: data.message || "Signin failed."});
+            }
+
+        } catch ( error ) {
+            console.log("SignIn: ", error);
+            setErrorMessage({message: "Can't connect to the server."})
         }
     }
+
     return (
         <div className={styles.signincard}>
-            <div>
+            <div className={styles.cardheader}>
+                <img 
+                    src="/routing-images/left.png" 
+                    alt="left arrow" 
+                    className={styles.leftPng} 
+                    onClick={() => router.back()} 
+                />
                 <h1>Sign in</h1>
             </div>
             <form onSubmit={handleSubmit} className={styles.formcont}>
@@ -58,22 +66,29 @@ export const SignIn = () => {
                     <input 
                         type="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.email && <p>{errorMessage.errors.email}</p>}
                 <br />
+
                 <label htmlFor="">Password:
                     <input 
                         type="password"
                         name="password"
-                        value={formData.password}
-                        onChange={handleChange}
                     />
                 </label>
+                {errorMessage?.errors?.email && <p>{errorMessage.errors.password}</p>}
                 <br />
-                <button type="submit">SignIn</button>
+
+                <div className={styles.footercard}>
+                    <button type="submit">SignIn</button>
+                    {errorMessage?.message && 
+                        <p className={styles.errormessage}>{errorMessage.message}</p>
+                    }
+                </div>
             </form>
         </div>
     )
-}
+};
+
+export default SignIn;

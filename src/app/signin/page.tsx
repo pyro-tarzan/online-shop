@@ -1,5 +1,5 @@
 import styles from "@/app/signin/signin.module.css";
-import { SignIn } from "@/components/signin/Signin";
+import SignIn from "@/components/signin/Signin";
 
 export default function SignInPage() {
     return (

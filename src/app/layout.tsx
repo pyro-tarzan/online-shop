@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-// IMPORT COMPONENTS
-import { NavbarSwitcher } from "@/components/navbarswitcher/NavbarSwitcher";
-
 const montserrat = Montserrat({
 	variable: "--font-Montserrat-serif",
 	subsets: ["latin"]
@@ -23,7 +20,6 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 		<body className={`${montserrat.variable}`}>
-			<NavbarSwitcher />
 			{children}
 		</body>
 		</html>
