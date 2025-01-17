@@ -7,7 +7,7 @@ export const storeHash = async(password:string, salt:number) => {
 
 export const verifyHash = async(currentPassword: string, storedPassword: string) => {
     try{
-        const result = bcrypt.compare(currentPassword, storedPassword);
+        const result = await bcrypt.compare(currentPassword, storedPassword);
         return result;
     } catch(error) {
         console.log("Encryption error:", error);

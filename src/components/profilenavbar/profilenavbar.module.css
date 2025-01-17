@@ -29,23 +29,27 @@
 .navmenus{
     display: flex;
     height: 100%;
-    align-items: center;   
-    gap: 20px; 
+}
+
+.menus{
+    height: 100%;
+    width: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .2s ease;
+    &:hover{
+        background-color: #0000001c;
+    }
 }
 
 .pmenus{
-    font-size: 25px;
-    font-weight: 700;
-    color: var(--nav-primary-color);
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
     padding: 15px 10px;
     cursor: pointer;
-    border-radius: 2px;
-    transition: background-color .2s ease, color .2s ease;
-}
-
-.pmenus:hover{
-    background-color: var(--nav-primary-color);
-    color: white;
 }
 
 .accountdropdown{
@@ -81,13 +85,14 @@
 
 .poptions{
     font-size: 20px;
-    font-weight: 500;
-    color: var(--nav-primary-color);
+    font-weight: 300;
+    color: black;
     width: 100%;
     text-align: center;
     padding: 10px 0px;
     cursor: pointer;
     transition: background-color .2s ease;
+    text-transform: capitalize;
 }
 
 .poptions:hover {
@@ -99,10 +104,22 @@
     height: 70px;
     border-radius: 100px;
     border: 1px solid rgba(0, 0, 0, 0.197);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.imagecont p{
+.startletter{
     color: var(--nav-primary-color);
-    font-weight: 500;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 100px;
+}
+
+.imagecont > p{
+    color: var(--nav-primary-color);
+    font-weight: 600;
     font-size: 22px;
+    text-transform: capitalize;
 }

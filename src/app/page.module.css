@@ -31,25 +31,8 @@
     font-size: 20px;
 }
 
-.headingcontents button{
-    font-size: 25px;
-    font-family: "Montserrat", serif;
-    font-weight: 500;
-    padding: 7px 15px;
-    margin-left: 5px;
-    margin-top: 40px;
-    color: white;
-    border-radius: 4px;
-    border: 2px solid white;
-    cursor: pointer;
-    background-color: transparent;
-    transition: color .2s ease, background-color .2s ease, border-color .2s ease;
-}
-
-.headingcontents button:hover{
-    color: white;
-    background-color: var(--primary-color);
-    border-color: transparent;
+.signupbutton{
+    margin-top: 10px;
 }
 
 .imagecontents{

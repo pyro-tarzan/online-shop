@@ -1,22 +1,22 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { verifyAuthToken } from "./app/lib/auth";
+import { NextResponse, NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { decrypt } from "./app/_lib/session";
 
-const isAuthenticated = (req: NextRequest) => {
-    const token = req.cookies.get("auth_token");
-    return token?.value && verifyAuthToken(token.value);
-}
+export async function middleware(req: NextRequest) {
 
-export function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl;
+    const protectedRoutes = "/profile";
+    const currentPath = req.nextUrl.pathname;
 
-    if ( pathname === "/signup" || pathname == "/signin" ) {
+    if ( currentPath === "/signin" || currentPath === "/signup" ) {
         return NextResponse.next();
     }
 
-    if ( pathname.startsWith("/profile") ) {
-        if ( !isAuthenticated(req) ) {
-            return NextResponse.redirect(new URL("/signin", req.url));
+    if ( protectedRoutes.startsWith("/profile") ) {
+        const cookie = (await cookies()).get("session")?.value;
+        const session = await decrypt(cookie);
+
+        if ( !session?.userId && req.nextUrl.pathname.startsWith("/profile")) {
+            return NextResponse.redirect(new URL("/signin", req.nextUrl));
         }
     }
 

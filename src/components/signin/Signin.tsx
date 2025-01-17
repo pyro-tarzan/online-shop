@@ -1,54 +1,12 @@
 "use client";
 import styles from "@/components/signin/siginpage.module.css";
-import { useState, FormEvent } from "react";
-import { FieldErrors, FormDataTypes, FormState } from "@/app/lib/types";
+import { useActionState } from "react";
 import { useRouter } from "next/navigation";
-import { SignInFormSchema } from "@/app/lib/definitions";
+import { signin } from "@/app/signin/actions";
 
-const SignIn = () => {
-    const [errorMessage, setErrorMessage] = useState<FormState>({});
+const SignIn: React.FC = () => {
     const router = useRouter();
-
-    const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        // PERFORM ACTION TO SUBMIT TO BACKEND VIA API REQUEST.
-        const form = event.currentTarget;
-        const formData = new FormData(form);
-        const formValues: FormDataTypes = {
-            email: formData.get("email") as string,
-            password: formData.get("password") as string
-        }
-
-        const result = SignInFormSchema.safeParse(formValues);
-        if ( !result.success ) {
-            const validateErrors: FieldErrors = result.error.flatten().fieldErrors;
-            setErrorMessage({errors: validateErrors});
-            return;
-        }
-
-        try{
-            const res = await fetch("/apis/signin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formValues)
-            });
-
-            const data = await res.json();
-            if ( data.status == 200 ) {
-                form.reset();
-                router.push(`/profile/${data.user_id}`);
-            } else {
-                setErrorMessage({message: data.message || "Signin failed."});
-            }
-
-        } catch ( error ) {
-            console.log("SignIn: ", error);
-            setErrorMessage({message: "Can't connect to the server."})
-        }
-    }
+    const [state, action, pending] = useActionState(signin, {});
 
     return (
         <div className={styles.signincard}>
@@ -61,14 +19,16 @@ const SignIn = () => {
                 />
                 <h1>Sign in</h1>
             </div>
-            <form onSubmit={handleSubmit} className={styles.formcont}>
+            <form action={action} className={styles.formcont}>
                 <label htmlFor="">Email:
                     <input 
                         type="email"
                         name="email"
                     />
                 </label>
-                {errorMessage?.errors?.email && <p>{errorMessage.errors.email}</p>}
+                {state?.errors?.email && 
+                    <p className={styles.errormessage}>{state.errors?.email}</p>
+                }
                 <br />
 
                 <label htmlFor="">Password:
@@ -77,14 +37,15 @@ const SignIn = () => {
                         name="password"
                     />
                 </label>
-                {errorMessage?.errors?.email && <p>{errorMessage.errors.password}</p>}
+                {state?.errors?.password &&
+                    <p className={styles.errormessage}>{state.errors?.password}</p>
+                }
                 <br />
 
                 <div className={styles.footercard}>
-                    <button type="submit">SignIn</button>
-                    {errorMessage?.message && 
-                        <p className={styles.errormessage}>{errorMessage.message}</p>
-                    }
+                    <button disabled={pending}>
+                        { pending ? "Submitting..." : "Sign in" }
+                    </button>
                 </div>
             </form>
         </div>

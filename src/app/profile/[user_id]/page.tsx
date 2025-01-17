@@ -1,5 +1,5 @@
 import styles from "@/app/profile/profilepage.module.css";
-import { query } from "@/app/lib/db";
+import { query } from "@/app/_lib/db";
 
 // IMPORT COMPONENTS
 import { ProfileNavbar } from "@/components/profilenavbar/ProfileNavbar";
@@ -21,7 +21,6 @@ export default async function ProfilePage({ params }: { params: {user_id: string
         return (
             <div className={styles.profilepage}>
                 <ProfileNavbar userData={userProfile} />
-                
             </div>
         )
     } catch(error) {

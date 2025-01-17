@@ -1,0 +1,21 @@
+.logoutcomponent{
+    margin-top: 70px;
+    padding: 100px 0px;
+}
+
+.loggedout{
+    text-align: center;
+    padding: 20px;
+}
+
+.logh1{
+    font-size: 50px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.logoutbuttons{
+    display: inline-flex;
+    flex-direction: row;
+    gap: 20px;
+}
